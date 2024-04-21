@@ -1,0 +1,135 @@
+                                                                                                Java 8
+=========================================================================================================================
+1) Introduction
+2) Functional Interface
+3) Short Circuit Method
+=============================================================================
+																		Short Circuit Method :
+
+limit() 
+ ** ) Its an Intermediate method needs Terminal method to complete
+ **) Parameter cant be negative . Else it will through IllegalArgumentException
+ 
+			          repo.findAll().stream().limit(2).collect(Collectors.toList());
+			
+findFirst()
+**) Its a Terminal method . It requires condition check. 
+**) FindFirst() method will returns an Optional<T> .
+**) It will always return the  first matching data.
+                repo.findAll().stream().filter(emp->emp.getName().contains("Karan")).findFirst().get();
+				
+findAny()
+**) Its a Terminal method . It requires condition check. 
+**) FindAny() method will returns an Optional<T> . 
+**) The output is not fixed for the condition check you have provided . Suppose there are 5 matching data are there  so it can return any data.
+                repo.findAll().stream().parallel().filter(emp->emp.getName().contains("Karan")).findAny().get();
+				
+anyMatch()
+**) Return type : boolean
+**) As soon as it will find the match it will not run furthur and return true.
+                        boolean flag =   repo.findAll().stream().anyMatch(emp->emp.getName().contains("Karan"));
+						
+allMatch(Predicate <?  super T> predicate)
+**) Return type : boolean
+**) If first condition will fail It will return false and will not check furthur
+                        boolean flag =   repo.findAll().stream().allMatch(emp->emp.getName().contains("Karan"));
+
+noneMatch(Predicate<?  super T> predicate)
+**) Return type : boolean
+**) If first condition will fail It will return false and will not check furthur
+                        boolean flag =   repo.findAll().stream().noneMatch(emp->emp.getName().contains("Karan"));
+						
+						
+===================================================================================================================================
+(Question : 
+Step1 : Java 8  we learn static method to be a part of interface as there is no need of class to define.
+Step2 : Also at the same time for method reference we must need a class to define the  implementation which is again a contradicting statement to step1.
+               
+			   Why is the need of abstract method if we can define both static and default method in interface ? )
+===================================================================================================================================
+																		Internal Working of HasMap in java 7
+
+          **)   HashMap uses HashTable implementation internally and consists of two important data structures which are LinkedList and Array .
+		  **)   There is a bucket of arrays with each element representing an individual LinkedList.
+		  **)   Each Node store 4 information .. 1) hash 2) key 3) value 4) link to the next node.
+		  
+		  Now, the question arises, how does HashMap know where to store the value in a bucket ?
+         
+		 **) To store the values, HashMap uses a concept known as Hashing . 
+		 **) Hashing is performed using a hashCode() function that converts an Object into HashCode.
+		 ** ) Based on the hash index results, a slot in the bucket is selected, and the value results are stored.
+		 **)  As you might think, there would be multiple objects which get hashed to the same bucket index.
+		 **)  This is known as collision, and therefore we use a LinkedList to store the values which are linked with each other.
+		 
+		 Changes in the Java 8 implementation:
+		 
+		 ** ) To improve the working of HashMap, Java 8 made updates to the internal implementation workflow. 
+		        Once a certain threshold level is reached, the values are now automatically stored in a balanced tree manner rather than a linked list.
+				
+		**)  So instead of O(n) retrieval time, we now have better O(log n) retrieval performance.
+		**) When we will delete elements and the hashmap contains less than 6 elements then it will convert from balanced tree to linkedlist. (untreeify)
+===================================================================================================================================
+										How does HashMap provide a constant time (O(1)) retrieval when LinkedList/Tree data Structures are used to store the values?
+
+         **) In real life, the time complexity of HashMap is not O(1). It is Big O(average size of the collision structure) and is known as amortized O(1).
+		 **) True O(1) is only achieved by collision-less hashing(also known as “perfect” hashing).		
+		 
+====================================================================================================================================
+														Difference between TreeMap, HashMap, LinkedHashMap, and HashTable in Java ?
+
+           All of the above helps us to store data in key : value format. The important distinction is between the ordering and time complexity of the retrieval of data.
+		   
+		   HashMap:
+
+					**) HashMap offers O(1) insertion and retrieval time.
+					**) It contains value based on keys.
+					**) The ordering of keys is random
+					**) It uses a linked list to store the data.
+					**) It contains only unique elements
+					**) It may have one null key and multiple null values
+					**) It is not thread-safe
+					**) HashSet Internally used hashmap .
+					
+		LinkedHashMap:
+
+				**) LinkedHashMap is the same as HashMap but maintains the insertion order.
+				**) The other properties align with that of HashMap.
+				
+	    TreeMap:
+
+				**) TreeMap offers O(log N) insertion and retrieval time.
+				**) It cannot have a null key but can have multiple null values.
+				**) It maintains ascending order of keys.
+				**) The rest of the properties align with that of HashMap.
+				
+	    Hashtable:
+
+			**) It is thread-safe.
+			**) Since it is thread-safe the performance might be low
+			**) Null is not allowed for both key and value
+			**) HashMap offers O(1) insertion and retrieval time.
+			
+==========================================================================================================================================
+																												HashSet Internal Working
+			
+					**) HashSet internally uses HashMap to store it’s elements.		
+					**) Whenever you create a HashSet object, one HashMap object associated with it is also created. This HashMap object is used to store the elements you enter in the HashSet.
+					**) The elements you add into HashSet are stored as keys of this HashMap object
+					**) The value associated with those keys will be a constant called "PRESENT"
+					**) Every constructor of HashSet class internally creates one HashMap object.
+				   **) Whenever you insert an element into HashSet using add() method, 
+				          It actually creates an entry in the internally backing HashMap object with element you have specified as it’s key and constant called “PRESENT” as it’s value.
+				
+				  **) add() method of HashSet class internally calls put() method of backing HashMap object by passing the element you have specified as a key and constant “PRESENT” as it’s value.
+				  **) add method will return boolean value
+				  **) remove method will return the  previous value					
+=============================================================================================================================================
+																												Map vs FlatMap				  
+					**) Both are intermediate methods and it returns another stream as output.
+					**) map is used for transformation
+					**) flatmap is used for transformation and flattening.
+=============================================================================================================================================
+                                                                                                                  Optional
+			     **) It will provide a way to deal with null values.
+				 **) Optional.of(null)   --- It will give you null pointer exception. For this case to handle we use Optional.ofNullable() to create optional object. In case of null it will return empty container.
+				 **) 
